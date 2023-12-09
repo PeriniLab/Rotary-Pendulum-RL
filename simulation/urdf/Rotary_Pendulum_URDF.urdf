@@ -1,0 +1,200 @@
+<?xml version="1.0" ?>
+
+<!-- Exported from Fusion360 using Fusion2PyBullet URDF Exporter add-in
+https://github.com/yanshil/Fusion2PyBullet -->
+
+<robot name="Rotary_Pendulum_URDF">
+
+<material name="steel">
+  <color rgba="0.8 0.8 0.8 1"/>
+</material>
+
+<material name="red_PLA">
+  <color rgba="0.8 0.1 0.1 1"/>
+</material>
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-1.637812853231983e-09 0.010428515187407722 -5.976808044466021e-07" rpy="0 0 0"/>
+    <mass value="0.5566153467152597"/>
+    <inertia ixx="0.00017394527995920147" iyy="0.0004598802097550786" izz="0.00038329306770351753" ixy="8.08736299538941e-12" iyz="-2.6827494373893233e-09" ixz="-2.944769778816203e-12"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="red_PLA"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="turret1">
+  <inertial>
+    <origin xyz="1.482589677110954e-05 0.1419171624727705 -0.000530790430100789" rpy="0 0 0"/>
+    <mass value="0.7582188421959414"/>
+    <inertia ixx="0.0016140518151033702" iyy="0.00024061157462105387" izz="0.0016314964223564498" ixy="-2.3455776078392934e-07" iyz="1.2573156205263618e-05" ixz="-6.0143918620094665e-09"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 -0.0 0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/turret1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 -0.0 0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/turret1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Encoder_Support_v41">
+  <inertial>
+    <origin xyz="0.00217985877019745 0.01980756738642242 0.004828256285272486" rpy="0 0 0"/>
+    <mass value="0.021191441984977768"/>
+    <inertia ixx="7.703008270521492e-06" iyy="6.842541333455326e-06" izz="5.8604685483009625e-06" ixy="-9.455308732426929e-07" iyz="-2.0942941093529613e-06" ixz="-1.0448432373225258e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 -0.1805 0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Encoder_Support_v41.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="red_PLA"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 -0.1805 0.0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Encoder_Support_v41.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Encoder_v51">
+  <inertial>
+    <origin xyz="-0.008979387591137053 9.351609612792688e-05 -0.019660179973636772" rpy="0 0 0"/>
+    <mass value="0.11251478072080646"/>
+    <inertia ixx="2.2648303452246082e-05" iyy="2.334690723956796e-05" izz="2.0466237623186986e-05" ixy="1.886820970903159e-07" iyz="5.279008581608583e-08" ixz="-1.4234532178983062e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.010935 -0.219133 -0.024221" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Encoder_v51.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="-0.010935 -0.219133 -0.024221" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Encoder_v51.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Holder_Bar_Cylinder_v31">
+  <inertial>
+    <origin xyz="0.0007754311855294217 0.000490995720344306 0.0013982362303315843" rpy="0 0 0"/>
+    <mass value="0.014744627556886925"/>
+    <inertia ixx="2.028287531912398e-06" iyy="1.3527262724917384e-06" izz="1.9562573889438236e-06" ixy="-1.5958955401930148e-07" iyz="1.2381964754608235e-07" ixz="-2.1749127605854876e-08"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.017519 -0.218933 -0.038804" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Holder_Bar_Cylinder_v31.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="red_PLA"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="-0.017519 -0.218933 -0.038804" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Holder_Bar_Cylinder_v31.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Steel_Bar_6mm_v31">
+  <inertial>
+    <origin xyz="-0.023620822599428645 -0.09658280987120599 0.010664037156271566" rpy="0 0 0"/>
+    <mass value="0.04435576706692199"/>
+    <inertia ixx="0.00013948948373546945" iyy="1.0108324876256423e-05" izz="0.0001460427897185128" ixy="-3.365556348381119e-05" iyz="1.5194797229720666e-05" ixz="3.7161627269661323e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.024712 -0.238249 -0.04214" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Steel_Bar_6mm_v31.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel"/>
+    <material/>
+  </visual>
+  <collision>
+    <origin xyz="-0.024712 -0.238249 -0.04214" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="meshes/Steel_Bar_6mm_v31.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Rigid_2" type="fixed">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="turret1"/>
+</joint>
+
+<joint name="Revolute_3" type="continuous">
+  <origin xyz="0.0 0.1805 0.0" rpy="0 0 0"/>
+  <parent link="turret1"/>
+  <child link="Encoder_Support_v41"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+<transmission name="Revolute_3_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="Revolute_3">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="Revolute_3_actr">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<joint name="Rigid_4" type="fixed">
+  <origin xyz="0.010935 0.038633 0.024221" rpy="0 0 0"/>
+  <parent link="Encoder_Support_v41"/>
+  <child link="Encoder_v51"/>
+</joint>
+
+<joint name="Revolute_5" type="continuous">
+  <origin xyz="0.006584 -0.0002 0.014583" rpy="0 0 0"/>
+  <parent link="Encoder_v51"/>
+  <child link="Holder_Bar_Cylinder_v31"/>
+  <axis xyz="0.411486 -0.0 0.911416"/>
+</joint>
+<transmission name="Revolute_5_tran">
+  <type>transmission_interface/SimpleTransmission</type>
+  <joint name="Revolute_5">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+  </joint>
+  <actuator name="Revolute_5_actr">
+    <hardwareInterface>PositionJointInterface</hardwareInterface>
+    <mechanicalReduction>1</mechanicalReduction>
+  </actuator>
+</transmission>
+
+<joint name="Rigid_6" type="fixed">
+  <origin xyz="0.007193 0.019316 0.003336" rpy="0 0 0"/>
+  <parent link="Holder_Bar_Cylinder_v31"/>
+  <child link="Steel_Bar_6mm_v31"/>
+</joint>
+
+</robot>
