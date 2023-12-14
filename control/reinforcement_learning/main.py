@@ -1,7 +1,7 @@
-from control.reinforcement_learning.Environments import RealPendulum as real
-from control.reinforcement_learning.Environments import PyBulletPendulum as pb
-from control.reinforcement_learning.Environments import FakeEnv as fake
-from control.reinforcement_learning.DQN.Agent import Agent
+from .Environments import RealPendulum as real
+from .Environments import PyBulletPendulum as pb
+from .Environments import FakeEnv as fake
+from .DQN.Agent import Agent
 
 isFake = False
 isPyBullet = True

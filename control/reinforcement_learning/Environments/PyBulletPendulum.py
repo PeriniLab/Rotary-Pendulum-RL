@@ -40,11 +40,11 @@ class PyBulletPendulum:
         """
         cubeStartPos = [0, 0, 0]
         cubeStartOrientation = p.getQuaternionFromEuler([np.pi / 2, 0, 0])
-        dir = os.path.abspath(os.path.dirname(__file__))
-        robot_urdf = "Rotary_Pendulum_URDF.urdf"
-        dir = os.path.join(dir, 'urdf')
-        robot_urdf = os.path.join(dir, robot_urdf)
-        self.robotId = p.loadURDF(robot_urdf, cubeStartPos, cubeStartOrientation,
+        curr_dir = os.path.abspath(os.path.dirname(__file__))
+        robot_urdf = 'Rotary_Pendulum_URDF.urdf'
+        # Construct the path to the URDF file
+        urdf_path = os.path.join(curr_dir, '..', '..', '..', 'simulation', 'urdf', robot_urdf)
+        self.robotId = p.loadURDF(urdf_path, cubeStartPos, cubeStartOrientation,
                                 #   flags=p.URDF_USE_INERTIA_FROM_FILE,
                                   useFixedBase=True
                                   )

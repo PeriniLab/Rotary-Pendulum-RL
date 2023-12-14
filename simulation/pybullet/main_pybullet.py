@@ -10,11 +10,18 @@ p.setGravity(0,0,-10)
 planeId = p.loadURDF("plane.urdf")
 cubeStartPos = [0,0,0]
 cubeStartOrientation = p.getQuaternionFromEuler([3.1415/2,0,0])
-dir = os.path.abspath(os.path.dirname(__file__))
+
+# go to current directory
+curr_dir = os.path.abspath(os.path.dirname(__file__))
+# Navigate to the parent directory (equivalent to 'cd ..')
+parent_dir = os.path.abspath(os.path.join(curr_dir, os.pardir))
+# Join the parent directory with the 'urdf' subdirectory
+urdf_dir = os.path.join(parent_dir, 'urdf')
+
 robot_urdf = "Rotary_Pendulum_URDF.urdf"
-dir = os.path.join(dir,'simulation/urdf')
-robot_urdf=os.path.join(dir,robot_urdf)
-robotId = p.loadURDF(robot_urdf,cubeStartPos, cubeStartOrientation, 
+urdf_path = os.path.join(urdf_dir, robot_urdf)
+
+robotId = p.loadURDF(urdf_path,cubeStartPos, cubeStartOrientation, 
                    # useMaximalCoordinates=1, ## New feature in Pybullet
                    flags=p.URDF_USE_INERTIA_FROM_FILE,
                    useFixedBase=True

@@ -1,7 +1,7 @@
 import numpy as np
 import serial
 import time
-from Environments.SerialReader import SerialReader
+from .SerialReader import SerialReader
 
 class RealPendulum:
     """

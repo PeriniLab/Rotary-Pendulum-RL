@@ -1,4 +1,4 @@
-from control.reinforcement_learning.Environments import RealPendulum as real
+from ..Environments import RealPendulum as real
 
 env = real.RealPendulum("COM3", 115200)
 env.reset()
