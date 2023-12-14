@@ -114,6 +114,21 @@ pip install -r requirements.txt
 # pip3 install -r requirements.txt
 ```
 
+#### Test the installation
+
+- Let's test if the pybullet installation was successful. Run the following command:
+
+    ```bash
+    python ./simulation/pybullet/main.py
+    # python3 ./simulation/pybullet/main.py
+    ```
+- Let's test if the reinforcement learning script works. Run the following command:
+
+    ```bash
+    python -m control.reinforcement_learning.main
+    # python3 -m control.reinforcement_learning.main
+    ```
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
