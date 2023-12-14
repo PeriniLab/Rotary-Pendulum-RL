@@ -1,5 +1,13 @@
-# Rotary-Pendulum-RL - Open Source Project
+# Rotary-Pendulum-RL
 
+[![GitHub contributors](https://img.shields.io/github/contributors/PeriniM/Rotary-Pendulum-RL)](https://github.com/PeriniM/Rotary-Pendulum-RL/graphs/contributors)
+[![GitHub forks](https://img.shields.io/github/forks/PeriniM/Rotary-Pendulum-RL)](https://github.com/PeriniM/Rotary-Pendulum-RL/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/PeriniM/Rotary-Pendulum-RL)](https://github.com/PeriniM/Rotary-Pendulum-RL/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/PeriniM/Rotary-Pendulum-RL)](https://github.com/PeriniM/Rotary-Pendulum-RL/issues)
+[![GitHub license](https://img.shields.io/github/license/PeriniM/Rotary-Pendulum-RL)](LICENSE)
+
+<!-- add image with markdown -->
+![Rotary Pendulum](docs/assets/rotary_pybullet.jpg)
 This is an open source project aimed at introducing people to **robotics**, from the hardware and embedded systems implementation to the software and control algorithms. The goal is to control a real life **rotary pendulum** to make it perform a swing-up and balance task.
 
 The project is divided into four parts: **hardware**, **firmware**, **simulation** and **control**. The hardware part is responsible for the mechanical design and the electronic components. The firmware part is responsible for the embedded systems implementation. The simulation part is responsible for the simulation of the rotary pendulum in a virtual environment. The control part is responsible for the implementation of the control algorithms.
@@ -22,9 +30,12 @@ The project is divided into four parts: **hardware**, **firmware**, **simulation
 │   ├─── pybullet
 │   └─── gazebo
 │
-└─── control
-    ├─── optimal_control
-    └─── reinforcement_learning
+├─── control
+│   ├─── optimal_control
+│   └─── reinforcement_learning
+│
+└─── docs
+    └─── assets
 ```
 ### 📂[hardware](hardware)
 
@@ -105,7 +116,7 @@ pip install -r requirements.txt
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you want to contribute to this project, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
