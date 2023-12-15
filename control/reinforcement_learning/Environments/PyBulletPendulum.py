@@ -9,9 +9,23 @@ class PyBulletPendulum:
     """
     PyBullet Rotary Pendulum
     """
-    def __init__(self):
+    def __init__(self, render=True):
+        """
+        Initialize the PyBullet Rotary Pendulum environment
+
+        Args:
+            render (bool, optional): Whether to render the environment. Defaults to True.
+
+        Returns:
+            None
+        """
+
         # Initialize PyBullet
-        self.physicsClient = p.connect(p.GUI)  # Use p.DIRECT for non-graphical version or p.GUI for graphical version
+        if render:
+            self.physicsClient = p.connect(p.GUI)
+        else:
+            self.physicsClient = p.connect(p.DIRECT)
+
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0, 0, -9.806)
         # move camera to focus on the robot
@@ -39,7 +53,14 @@ class PyBulletPendulum:
     def load_pendulum_urdf(self):
         """
         Load the pendulum URDF into the environment.
+
+        Args:
+            None
+
+        Returns:
+            None
         """
+
         cubeStartPos = [0, 0, 0]
         cubeStartOrientation = p.getQuaternionFromEuler([np.pi / 2, 0, 0])
         curr_dir = os.path.abspath(os.path.dirname(__file__))
@@ -73,7 +94,14 @@ class PyBulletPendulum:
     def reset(self):
         """
         Reset the environment to a random state
+
+        Args:
+            None
+
+        Returns:
+            state (np.array): [bar_angle, bar_angular_velocity]
         """
+
         # Reset the episode angles
         self.episode_angles = []
         self.episode_reward = 0.0
@@ -86,14 +114,21 @@ class PyBulletPendulum:
         # Reset iteration count
         self.iterCount = 0
         
-        normalized_state = self.normalize_state(self.state)
-        return normalized_state
-        # return self.state
+        # normalized_state = self.normalize_state(self.state)
+        # return normalized_state
+        return self.state
     
     def normalize_state(self, state):
         """
         Normalize the state to be between -1 and 1
+
+        Args:
+            state (np.array): [bar angle, bar angular velocity]
+
+        Returns:
+            normalized_state (np.array): [bar angle norm, bar angular velocity norm]
         """
+
         normalized_state = np.zeros(self.num_state)
         normalized_state[0] = state[0] / np.pi
         normalized_state[1] = state[1] / self.omega_max
@@ -103,7 +138,14 @@ class PyBulletPendulum:
     def step(self, action):
         """
         Take a step in the environment
+
+        Args:
+            action (float): Motor speed percentage [-100, 100]
+
+        Returns:
+            state (np.array): [bar angle, bar angular velocity]
         """
+
         self.action = action
         # Send action to pendulum over serial
         self.send_fake_serial([self.action, 0])
@@ -122,13 +164,20 @@ class PyBulletPendulum:
         self.reset_policy(self.maxIter)
 
 
-        return normalized_state, reward, self.done
-        # return self.state, reward, self.done
+        # return normalized_state, reward, self.done
+        return self.state, reward, self.done
     
     def calculate_reward(self, state):
         """
         Calculate the reward for the current state
+
+        Args:
+            state (np.array): [bar angle, bar angular velocity]
+
+        Returns:
+            reward (float): Reward for the current state
         """
+
         # Constants to scale the bar and motor angle penalties
         # ANGLE_WEIGHT = 1.0
         # VELOCITY_WEIGHT = 0.01
@@ -171,15 +220,29 @@ class PyBulletPendulum:
     
     def reset_policy(self, reset_count=200):
         """
-        Reset the policy if the episode is done
+        Policy to reset the environment
+
+        Args:
+            reset_count (int, optional): Number of iterations to wait before resetting the system. Defaults to 200.
+        
+        Returns:
+            None
         """
+
         if self.iterCount >= reset_count:
             self.done = True
 
     def send_fake_serial(self, command):
         """
-        Send a command to the pendulum over fake serial
+        Send a command to the pendulum, simulating a fake serial connection
+
+        Args:
+            command (list): [motor speed percentage, episode done flag]
+
+        Returns:
+            None
         """
+
         motor_speed_percentage = command[0]
         episode_done = command[1]
 
@@ -201,7 +264,15 @@ class PyBulletPendulum:
     
     def get_state(self):
         """
-        Read the state from the pendulum over fake serial
+        Read the state from the pendulum, simulating a fake serial connection
+
+        Args:
+            None
+
+        Returns:
+            state (np.array): [bar angle, bar angular velocity]
+            motor_angle (float): Motor angle in degrees
+            done (bool): Episode done flag
         """
 
         # Get the bar angle
@@ -237,6 +308,12 @@ class PyBulletPendulum:
     def reset_robot(self, mode="random"):
         """
         Reset the robot state
+
+        Args:
+            mode (str, optional): Mode to reset the robot. Defaults to "random".
+
+        Returns:
+            state (np.array): [bar angle, bar angular velocity]
         """
 
         if mode == "random":
@@ -271,16 +348,28 @@ class PyBulletPendulum:
         
         return self.get_state()[0]
     
-    def render(self):
+    def render(self, fps=240.0):
         """
         Render the pendulum in PyBullet
+
+        Args:
+            fps (float, optional): Number of frames per second. Defaults to 240.0.
+
+        Returns:
+            None
         """
         p.stepSimulation()
-        # time.sleep(1./240.)
+        # time.sleep(1./fps)
     
     def close(self):
         """
         Close the PyBullet connection
+
+        Args:
+            None
+
+        Returns:
+            None
         """
         p.disconnect()
         

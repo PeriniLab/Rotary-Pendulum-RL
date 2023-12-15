@@ -17,7 +17,7 @@ if real_pendulum:
     env = real.RealPendulum("COM3", 115200)
 else:
     # initialize PyBulletPendulum environment
-    env = pybullet.PyBulletPendulum()
+    env = pybullet.PyBulletPendulum(render=True)
 
 env.maxIter = 1_000_000
 # reset environment to home position

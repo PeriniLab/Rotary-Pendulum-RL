@@ -8,6 +8,17 @@ class RealPendulum:
     Real rotary pendulum with ESP32
     """
     def __init__(self, port, baudrate):
+        """
+        Initialize the environment.
+        
+        Args:
+            port (str): The serial port to connect to.
+            baudrate (int): The baudrate to use for the serial connection.
+
+        Returns:
+            None
+        """
+
         self.ser = serial.Serial(
             port=port,
             baudrate=baudrate,
@@ -36,7 +47,14 @@ class RealPendulum:
     def reset(self):
         """
         Reset the environment to the initial state.
+
+        Args:
+            None
+
+        Returns:
+            state (np.array): [bar angle, bar angular velocity]
         """
+
         # Reset the episode angles
         self.episode_angles = []
 
@@ -55,8 +73,17 @@ class RealPendulum:
     
     def step(self, action):
         """
-        Take a step in the environment.
+        Take a step in the environment
+
+        Args:
+            action (float): Motor speed percentage [-100, 100]
+
+        Returns:
+            state (np.array): [bar angle, bar angular velocity]
+            reward (float): Reward for the current state
+            done (bool): Whether the episode is done or not
         """
+
         # Send action to pendulum over serial
         self.send_serial(f"{action},0")
         # Read state and episode done flag from serial
@@ -75,14 +102,28 @@ class RealPendulum:
 
     def send_serial(self, command):
         """
-        Send a command to the pendulum over serial.
+        Send a command to the pendulum over serial
+
+        Args:
+            command (str): [motor speed percentage, reset flag]
+
+        Returns:
+            None
         """
+
         self.ser.write(f"{command}\n".encode())
-        time.sleep(0.1)
+        # time.sleep(0.1)
     
     def normalize_state(self, state):
         """
-        Normalize the state to [-1, 1].
+        Normalize the state to [-1, 1]
+
+        Args:
+            state (np.array): [bar angle, bar angular velocity]
+
+        Returns:
+            normalized_state (np.array): [bar angle norm, bar angular velocity norm]
+        
         """
         normalized_angle = state[0] / np.pi  # Normalizes to [-1, 1]
         normalized_velocity = state[1] / self.omega_max  # Normalizes to [-1, 1]
@@ -91,15 +132,29 @@ class RealPendulum:
     
     def reset_policy(self, reset_count=200):
         """
-        Reset the system when a condition is met.
+        Policy to reset the environment
+
+        Args:
+            reset_count (int, optional): Number of iterations to wait before resetting the system. Defaults to 200.
+        
+        Returns:
+            None
         """
+
         if self.iterCount > reset_count:
             self.done = True
     
     def calculate_reward(self, normalized_state):
         """
-        Calculate the reward for the current state.
+        Calculate the reward for the current state
+
+        Args:
+            state (np.array): [bar angle, bar angular velocity]
+
+        Returns:
+            reward (float): Reward for the current state
         """
+
         # Constants to scale the angle and velocity penalties
         ANGLE_WEIGHT = 1.0
         VELOCITY_WEIGHT = 0.1
@@ -132,14 +187,22 @@ class RealPendulum:
         #         reward-=100.0
         return reward
 
-    def render(self):
+    def render(self, camera=False):
         """
-        Render the state (optional).
+        Render the state (optional), e.g. display the video stream
         """
-        print("Connect the camera to the pendulum and display the video stream.")
+        if camera:
+            print("Connect the camera to the pendulum and display the video stream.")
 
     def close(self):
         """
-        Close the serial connection.
+        Close the serial connection
+
+        Args:
+            None
+
+        Returns:
+            None
         """
+
         self.ser.close()

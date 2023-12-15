@@ -4,9 +4,9 @@ import time
 import pybullet_data
 import numpy as np
 
-physicsClient = p.connect(p.GUI)#or p.DIRECT for non-graphical version
-p.setAdditionalSearchPath(pybullet_data.getDataPath()) #optionally
-p.setGravity(0,0,-10)
+physicsClient = p.connect(p.GUI) # p.DIRECT for non-graphical version
+p.setAdditionalSearchPath(pybullet_data.getDataPath()) # used by loadURDF
+p.setGravity(0,0,-9.806)
 planeId = p.loadURDF("plane.urdf")
 cubeStartPos = [0,0,0]
 cubeStartOrientation = p.getQuaternionFromEuler([3.1415/2,0,0])
@@ -22,7 +22,7 @@ robot_urdf = "Rotary_Pendulum_URDF.urdf"
 urdf_path = os.path.join(urdf_dir, robot_urdf)
 
 robotId = p.loadURDF(urdf_path,cubeStartPos, cubeStartOrientation, 
-                   # useMaximalCoordinates=1, ## New feature in Pybullet
+                   # useMaximalCoordinates=1,
                    flags=p.URDF_USE_INERTIA_FROM_FILE,
                    useFixedBase=True
                    )
