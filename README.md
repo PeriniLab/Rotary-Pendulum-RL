@@ -32,6 +32,7 @@ The project is divided into four parts: **hardware**, **firmware**, **simulation
 │   └─── gazebo
 │
 ├─── control
+│   ├─── pid
 │   ├─── optimal_control
 │   └─── reinforcement_learning
 │
