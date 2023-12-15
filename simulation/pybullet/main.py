@@ -65,6 +65,7 @@ def robot_output_serial(state, motor_compensation_angle, bar_compensation_angle,
     if motor_angle > motor_angle_range[1] or motor_angle < motor_angle_range[0]:
         out_of_range = True
 
+
     # Adjusting the bar angle to map correctly
     bar_angle = bar_angle % (2 * np.pi)  # Normalize the angle to be within 0 to 2π
     if bar_angle > np.pi:
@@ -93,7 +94,7 @@ def robot_input_serial(p, robotId, motor_joint_index, bar_joint_index, max_motor
     # Check if the episode is done
     if episode_done:
         # Reset the robot
-        reset_random(p, robotId, motor_joint_index, bar_joint_index, motor_angle_range)
+        reset("home", p, robotId, motor_joint_index, bar_joint_index,  motor_compensation_angle, bar_compensation_angle, motor_angle_range)
     else:
         # Calculate the speed in rad/s
         motor_speed = speed_percentage * max_motor_speed / 100
@@ -105,12 +106,18 @@ def robot_input_serial(p, robotId, motor_joint_index, bar_joint_index, max_motor
                             )
 
 # method to reset the robot with radom states
-def reset_random(p, robotId, motor_joint_index, bar_joint_index, motor_angle_range):
+def reset(mode, p, robotId, motor_joint_index, bar_joint_index,  motor_compensation_angle, bar_compensation_angle, motor_angle_range):
 
-    # Get random states
-    bar_angle = np.random.uniform(-np.pi, np.pi)
-    bar_angular_velocity = np.random.uniform(-10, 10)
-    motor_angle = np.random.uniform(np.deg2rad(motor_angle_range[0]), np.deg2rad(motor_angle_range[1]))
+    if mode == "random":
+        # Get random states
+        bar_angle = np.random.uniform(-np.pi, np.pi)
+        bar_angular_velocity = np.random.uniform(-10, 10)
+        motor_angle = np.random.uniform(np.deg2rad(motor_angle_range[0]), np.deg2rad(motor_angle_range[1]))
+    elif mode == "home":
+        # Get home states
+        bar_angle = -bar_compensation_angle+np.pi
+        bar_angular_velocity = 0
+        motor_angle = -motor_compensation_angle
 
     # Reset the robot to the home position
     p.resetJointState(robotId, motor_joint_index, targetValue=motor_angle)
@@ -123,10 +130,10 @@ def reset_random(p, robotId, motor_joint_index, bar_joint_index, motor_angle_ran
                             targetVelocity=bar_angular_velocity,
                             force=0
                             )
-    
+
     return [bar_angle, bar_angular_velocity, motor_angle]
 
-reset_random(p, robotId, motor_joint_index, bar_joint_index, motor_angle_range)
+reset("home", p, robotId, motor_joint_index, bar_joint_index, motor_compensation_angle, bar_compensation_angle, motor_angle_range)
 
 # move camera to focus on the robot
 p.resetDebugVisualizerCamera(cameraDistance=0.4, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[0,0,0.1])
@@ -143,13 +150,15 @@ while True:
     robot_output = robot_output_serial([bar_angle, bar_angular_velocity, motor_angle], motor_compensation_angle, bar_compensation_angle, motor_angle_range)
     # if out of range, reset the robot
     if robot_output[3]:
-        reset_random(p, robotId, motor_joint_index, bar_joint_index, motor_angle_range)
+        reset("random", p, robotId, motor_joint_index, bar_joint_index, motor_compensation_angle, bar_compensation_angle,  motor_angle_range)
         print("Out of range! Resetting the robot...")
 
     # read the fake serial port
     random_motor_speed = np.random.uniform(-100, 100)
-    robot_input = robot_input_serial(p, robotId, motor_joint_index, bar_joint_index, max_motor_speed, motor_angle_range, [random_motor_speed, 0])
-    print(f"Bar angle: {robot_output[0]} [rad], Bar angular velocity: {robot_output[1]} [rad/s], Motor angle: {robot_output[2]} [deg], Out of range: {robot_output[3]}")
+    control_signal = random_motor_speed
+
+    robot_input = robot_input_serial(p, robotId, motor_joint_index, bar_joint_index, max_motor_speed, motor_angle_range, [control_signal, 0])
+    # print(f"Bar angle: {robot_output[0]} [rad], Bar angular velocity: {robot_output[1]} [rad/s], Motor angle: {robot_output[2]} [deg], Out of range: {robot_output[3]}")
 
     p.stepSimulation()
     # time.sleep(1./240.)

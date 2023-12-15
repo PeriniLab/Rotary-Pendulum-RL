@@ -26,9 +26,9 @@ class RealPendulum:
         self.motorAngle = 0.0
         self.done = False
         self.iterCount = 0
-        # self.maxIter = 1000
+        self.maxIter = 1000
         self.omega_max = 10.0
-        # self.range_actions = np.array([0.0, 100.0])
+        self.range_actions = np.array([-100.0, 100.0])
 
         # variable to store angles of one episode
         self.episode_angles = []
@@ -50,8 +50,8 @@ class RealPendulum:
 
         # Reset iteration count
         self.iterCount = 0
-        normalized_state = self.normalize_state(self.state)
-        return normalized_state
+        # normalized_state = self.normalize_state(self.state)
+        return self.state
     
     def step(self, action):
         """
@@ -71,7 +71,7 @@ class RealPendulum:
         self.iterCount += 1
         self.reset_policy(self.maxIter)
 
-        return normalized_state, reward, self.done
+        return self.state, reward, self.done
 
     def send_serial(self, command):
         """

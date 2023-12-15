@@ -30,12 +30,8 @@ class SerialReader(threading.Thread):
                     self.motorAngle = float(parts[2])
                     self.episode_done = bool(float(parts[3]))
                     # print(self.state, self.motorAngle, self.episode_done)
-    
-    def read_sim(self):
-        with self.lock:
-            print("TO IMPLEMENT")
             
     def get_state(self):
-        time.sleep(0.1)
+        # time.sleep(0.1)
         with self.lock:
             return self.state.copy(), self.motorAngle, self.episode_done

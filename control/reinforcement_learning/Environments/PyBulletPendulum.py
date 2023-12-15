@@ -29,8 +29,10 @@ class PyBulletPendulum:
         self.motorAngle = 0.0
         self.done = False
         self.iterCount = 0
+        self.maxIter = 1000
         self.omega_max = 10.0
         self.episode_reward = 0.0
+        self.range_actions = np.array([-100.0, 100.0])
         # variable to store angles of one episode
         self.episode_angles = []
 
