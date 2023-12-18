@@ -6,6 +6,7 @@
 # -- Path setup --------------------------------------------------------------
 
 import os, sys
+
 sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
@@ -21,9 +22,8 @@ author = 'PeriniM'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon']
 
 templates_path = ['_templates']
-exclude_patterns = []
-
-
+# avoid main.py
+exclude_patterns = ['main.py']
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

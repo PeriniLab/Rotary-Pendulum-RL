@@ -1,7 +1,7 @@
-from .Environments import RealPendulum as real
-from .Environments import PyBulletPendulum as pb
-from .Environments import FakeEnv as fake
-from .DQN.Agent import Agent
+from ..Environments import RealPendulum as real
+from ..Environments import PyBulletPendulum as pb
+from ..Environments import FakeEnv as fake
+from ..DQN.Agent import Agent
 
 isFake = False
 isPyBullet = True

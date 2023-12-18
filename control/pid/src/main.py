@@ -1,6 +1,6 @@
-from ..reinforcement_learning.Environments import RealPendulum as real
-from ..reinforcement_learning.Environments import PyBulletPendulum as pybullet
-from .classes.PIDController import PIDController
+from ...reinforcement_learning.Environments import RealPendulum as real
+from ...reinforcement_learning.Environments import PyBulletPendulum as pybullet
+from ..classes.PIDController import PIDController
 import numpy as np
 
 real_pendulum = False
