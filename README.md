@@ -6,8 +6,9 @@
 [![GitHub issues](https://img.shields.io/github/issues/PeriniM/Rotary-Pendulum-RL)](https://github.com/PeriniM/Rotary-Pendulum-RL/issues)
 [![GitHub license](https://img.shields.io/github/license/PeriniM/Rotary-Pendulum-RL)](LICENSE)
 
-<!-- add image with markdown -->
-![Rotary Pendulum](docs/assets/rotary_pybullet.jpg)
+https://github.com/PeriniM/Rotary-Pendulum-RL/assets/19621159/0168d43d-66d2-4de8-862b-840ff1d75a66
+
+<!-- ![Rotary Pendulum](docs/assets/rotary_pybullet.jpg) -->
 This is an open source project aimed at introducing people to **robotics**, from the hardware and embedded systems implementation to the software and control algorithms. The goal is to control a real life **rotary pendulum** to make it perform a swing-up and balance task.
 
 The project is divided into four parts: **hardware**, **firmware**, **simulation** and **control**. The hardware part is responsible for the mechanical design and the electronic components. The firmware part is responsible for the embedded systems implementation. The simulation part is responsible for the simulation of the rotary pendulum in a virtual environment. The control part is responsible for the implementation of the control algorithms.
@@ -31,6 +32,7 @@ The project is divided into four parts: **hardware**, **firmware**, **simulation
 │   └─── gazebo
 │
 ├─── control
+│   ├─── pid
 │   ├─── optimal_control
 │   └─── reinforcement_learning
 │
