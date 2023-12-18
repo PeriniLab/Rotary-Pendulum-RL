@@ -6,11 +6,39 @@
 Welcome to Rotary-Pendulum-RL's documentation!
 ==============================================
 
+Here you will find all the information you need to get started with the Rotary-Pendulum-RL project.
+The following sections will guide you through the installation process, from the hardware to the firmware and the simulation environment.
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Introduction
 
-   modules
+   introduction/overview
+   introduction/contributing
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+
+   getting_started/installation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Hardware
+
+   hardware/bill_of_materials
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Firmware
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Simulation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Control
 
 Indices and tables
 ==================
