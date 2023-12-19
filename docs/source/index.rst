@@ -27,6 +27,9 @@ The following sections will guide you through the installation process, from the
    :caption: Hardware
 
    hardware/bill_of_materials
+   hardware/3d_models
+   hardware/schematics
+   hardware/assembly
 
 .. toctree::
    :maxdepth: 2
@@ -39,6 +42,7 @@ The following sections will guide you through the installation process, from the
 .. toctree::
    :maxdepth: 2
    :caption: Control
+
 
 Indices and tables
 ==================
