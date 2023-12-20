@@ -18,13 +18,13 @@ if real_pendulum:
     env = real.RealPendulumEnv("COM3", 115200)
 else:
     # initialize PyBulletPendulum environment
-    env = pybullet.PyBulletPendulumEnv(render=True)
+    env = pybullet.PyBulletPendulumEnv(render_mode='human')
 
 env.maxIter = 1_000_000
 # reset environment to home position
 env.reset()
 # get initial observation
-observation, reward, done = env.step(0)
+observation, reward, done, _, _ = env.step(0)
 
 while True:
 
@@ -37,10 +37,10 @@ while True:
     # print(f"Error: {error}, Control Signal: {control_signal}")
 
     # step environment with pid control signal
-    observation, reward, done = env.step(control_signal)
+    observation, reward, done, _, _= env.step(control_signal)
     # render environment
     env.render()
     # reset pid controller and position if pendulum goes out of bounds
-    if env.done:
+    if done:
         env.reset()
         energy_controller.reset()

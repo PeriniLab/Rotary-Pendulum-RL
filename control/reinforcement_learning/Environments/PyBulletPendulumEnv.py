@@ -46,9 +46,10 @@ class PyBulletPendulumEnv(gym.Env):
         self.nbJoint = 1
         self.num_state = 2
         self.action = 0.0
-        self.range_actions = np.array([-1.0, 1.0])
         self.n_actions = 101
-        self.observation_space = spaces.Box(low=-1.0, high=1.0, shape=(self.num_state,), dtype=np.float32)
+        self.range_actions = np.array([-1.0, 1.0])
+        self.range_observation = np.array([-1.0, 1.0])
+        self.observation_space = spaces.Box(low=self.range_observation[0], high=self.range_observation[1], shape=(self.num_state,), dtype=np.float32)
         self.action_space = spaces.Box(low=self.range_actions[0], high=self.range_actions[1], shape=(1,), dtype=np.float32)
         self.motorAngle = 0.0
         self.terminated = False
@@ -148,8 +149,6 @@ class PyBulletPendulumEnv(gym.Env):
         self.send_fake_serial([self.action, 0])
         # Read state and episode done flag from serial
         self.observation_space, self.motorAngle, self.terminated = self.get_state()
-        
-        p.stepSimulation()
 
         # Store the angles of the episode for reward penalty
         self.episode_angles.append(self.observation_space[0])
@@ -356,7 +355,8 @@ class PyBulletPendulumEnv(gym.Env):
             None
         """
         p.stepSimulation()
-        # time.sleep(1./fps)
+        if self.render_mode == "human":
+            time.sleep(1./fps)
     
     def close(self):
         """

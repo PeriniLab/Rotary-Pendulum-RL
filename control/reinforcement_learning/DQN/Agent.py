@@ -170,7 +170,7 @@ class Agent:
 
         # train the network for a number of episodes
         for episode in range(self.train_episodes):
-            observation = self.env.reset()
+            observation, _ = self.env.reset()
             done = False
             self.discounted_reward = 0.0
             episode_steps = 0
@@ -186,7 +186,7 @@ class Agent:
                 # because when passing the env reference, the old observation gets overwritten
                 observation_copy = copy.copy(observation)
                 action = self.policy(observation, 'epsilon_greedy')
-                new_observation, reward, done = self.env.step(self.env.actions[action])
+                new_observation, reward, done, _, _ = self.env.step(self.env.actions[action])
                 new_observation_copy = copy.copy(new_observation)
                 self.discounted_reward += self.discount_factor**episode_steps * reward
                 

@@ -14,9 +14,9 @@ plot_colormaps = False
 if isFake:
     env = fake.FakeEnv(1)
 elif isPyBullet:
-    env = pb.PyBulletPendulum(render=True)
+    env = pb.PyBulletPendulumEnv(render_mode='human')
 elif isReal:
-    env = real.RealPendulum("COM3", 115200)
+    env = real.RealPendulumEnv("COM3", 115200)
 else:
     raise Exception("No environment selected!")
 

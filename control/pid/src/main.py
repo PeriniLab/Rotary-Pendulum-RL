@@ -1,5 +1,5 @@
-from ...reinforcement_learning.Environments import RealPendulum as real
-from ...reinforcement_learning.Environments import PyBulletPendulum as pybullet
+from ...reinforcement_learning.Environments import RealPendulumEnv as real
+from ...reinforcement_learning.Environments import PyBulletPendulumEnv as pybullet
 from ..classes.PIDController import PIDController
 import numpy as np
 
@@ -14,16 +14,16 @@ desired_motor_angle = 0
 
 if real_pendulum:
     # initialize RealPendulum environment
-    env = real.RealPendulum("COM3", 115200)
+    env = real.RealPendulumEnv("COM3", 115200)
 else:
     # initialize PyBulletPendulum environment
-    env = pybullet.PyBulletPendulum(render=True)
+    env = pybullet.PyBulletPendulumEnv(render_mode='human')
 
 env.maxIter = 1_000_000
 # reset environment to home position
 env.reset()
 # get initial observation
-observation, reward, done = env.step(0)
+observation, reward, done, _, _ = env.step(0)
 
 while True:
 
@@ -34,11 +34,11 @@ while True:
     # print(f"Error: {error}, Control Signal: {control_signal}")
 
     # step environment with pid control signal
-    observation, reward, done = env.step(control_signal)
+    observation, reward, done, _, _ = env.step(control_signal)
     # render environment
     env.render()
     # reset pid controller and position if pendulum goes out of bounds
-    if env.done:
+    if done:
         env.reset()
         pid.integral = 0
         pid.prev_error = 0
