@@ -81,6 +81,14 @@ In the **requirements.txt** file you will find all the dependencies needed to ru
    pip install -r requirements.txt
    # pip3 install -r requirements.txt
 
+If you plan to implement some reinforcement learning algorithms, especially using `Stable Baselines 3 <https://stable-baselines.readthedocs.io/en/master/>`_, you will need to install the Pytorch dependencies.
+Go to the `Pytorch website <https://pytorch.org/>`_, fill the installation wizard and run the command that will be provided to you. In this way you can opt to use the GPU or not.
+An example of the command is the following:
+
+.. code-block:: bash
+
+   pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
 Test the installation
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -95,5 +103,8 @@ Test the installation
 
     .. code-block:: bash
 
-       python -m control.reinforcement_learning.main
-       # python3 -m control.reinforcement_learning.main
+       python -m control.reinforcement_learning.src.main
+       # or
+       python -m control.pid.src.main
+       # or
+       python ./simulation/pybullet/main.py
