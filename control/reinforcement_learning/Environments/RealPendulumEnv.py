@@ -3,7 +3,7 @@ import serial
 import time
 from .SerialReader import SerialReader
 
-class RealPendulum:
+class RealPendulumEnv:
     """
     Real rotary pendulum with ESP32
     """

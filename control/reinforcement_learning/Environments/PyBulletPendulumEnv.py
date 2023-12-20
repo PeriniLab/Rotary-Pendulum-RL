@@ -4,12 +4,18 @@ import os
 import time
 import pybullet_data
 import copy
+import gymnasium as gym
+from gymnasium import spaces
 
-class PyBulletPendulum:
+class PyBulletPendulumEnv(gym.Env):
     """
     PyBullet Rotary Pendulum
     """
-    def __init__(self, render=True):
+
+    metadata = {"render_modes": ["human"]}
+
+    def __init__(self, render_mode="human"):
+        super(PyBulletPendulumEnv, self).__init__()
         """
         Initialize the PyBullet Rotary Pendulum environment
 
@@ -20,8 +26,9 @@ class PyBulletPendulum:
             None
         """
 
+        self.render_mode = render_mode
         # Initialize PyBullet
-        if render:
+        if render_mode == "human":
             self.physicsClient = p.connect(p.GUI)
         else:
             self.physicsClient = p.connect(p.DIRECT)
@@ -39,14 +46,19 @@ class PyBulletPendulum:
         self.nbJoint = 1
         self.num_state = 2
         self.action = 0.0
-        self.state = np.zeros(self.num_state)
+        self.range_actions = np.array([-1.0, 1.0])
+        self.n_actions = 101
+        self.observation_space = spaces.Box(low=-1.0, high=1.0, shape=(self.num_state,), dtype=np.float32)
+        self.action_space = spaces.Box(low=self.range_actions[0], high=self.range_actions[1], shape=(1,), dtype=np.float32)
         self.motorAngle = 0.0
-        self.done = False
+        self.terminated = False
+        self.truncated = False
+        self.info = {}
         self.iterCount = 0
-        self.maxIter = 1000
+        self.maxIter = 1500
         self.omega_max = 10.0
         self.episode_reward = 0.0
-        self.range_actions = np.array([-100.0, 100.0])
+        
         # variable to store angles of one episode
         self.episode_angles = []
 
@@ -91,7 +103,7 @@ class PyBulletPendulum:
         self.motor_compensation_angle = 0.400
         self.bar_compensation_angle = -0.264
 
-    def reset(self):
+    def reset(self, seed=None, options=None):
         """
         Reset the environment to a random state
 
@@ -102,38 +114,22 @@ class PyBulletPendulum:
             state (np.array): [bar_angle, bar_angular_velocity]
         """
 
+        super().reset(seed=seed, options=options)
         # Reset the episode angles
         self.episode_angles = []
         self.episode_reward = 0.0
+        self.terminated = False
         # Send command to pendulum to reset to random position
         self.send_fake_serial([0, 1])
 
         # get the state from the pendulum
-        self.state, self.motorAngle, self.done = self.get_state()
+        self.observation_space, self.motorAngle, self.terminated = self.get_state()
 
         # Reset iteration count
         self.iterCount = 0
-        
-        # normalized_state = self.normalize_state(self.state)
-        # return normalized_state
-        return self.state
+        self.info = {"episode": {"r": 0.0, "l": self.iterCount}}
     
-    def normalize_state(self, state):
-        """
-        Normalize the state to be between -1 and 1
-
-        Args:
-            state (np.array): [bar angle, bar angular velocity]
-
-        Returns:
-            normalized_state (np.array): [bar angle norm, bar angular velocity norm]
-        """
-
-        normalized_state = np.zeros(self.num_state)
-        normalized_state[0] = state[0] / np.pi
-        normalized_state[1] = state[1] / self.omega_max
-
-        return normalized_state
+        return self.observation_space.astype(np.float32), self.info
     
     def step(self, action):
         """
@@ -146,26 +142,27 @@ class PyBulletPendulum:
             state (np.array): [bar angle, bar angular velocity]
         """
 
-        self.action = action
+        # multiply the action by 100 to get the percentage
+        self.action = action*100.0
         # Send action to pendulum over serial
         self.send_fake_serial([self.action, 0])
         # Read state and episode done flag from serial
-        self.state, self.motorAngle, self.done = self.get_state()
-        # normalized_state = self.normalize_state(self.state)
+        self.observation_space, self.motorAngle, self.terminated = self.get_state()
+        
+        p.stepSimulation()
 
         # Store the angles of the episode for reward penalty
-        self.episode_angles.append(self.state[0])
+        self.episode_angles.append(self.observation_space[0])
         
         # Calculate reward
-        normalized_state = self.normalize_state(self.state)
-        reward = self.calculate_reward(self.state)
+        reward = self.calculate_reward(self.observation_space)
         self.episode_reward += reward
         self.iterCount += 1
         self.reset_policy(self.maxIter)
-
+        self.info = {"episode": {"r": self.episode_reward, "l": self.iterCount}}
 
         # return normalized_state, reward, self.done
-        return self.state, reward, self.done
+        return self.observation_space.astype(np.float32), reward, self.terminated, self.truncated, self.info
     
     def calculate_reward(self, state):
         """
@@ -179,31 +176,31 @@ class PyBulletPendulum:
         """
 
         # Constants to scale the bar and motor angle penalties
-        # ANGLE_WEIGHT = 1.0
-        # VELOCITY_WEIGHT = 0.01
-        # MOTOR_ANGLE_WEIGHT = 0.001
-        # ACTION_WEIGHT = 0.001
+        ANGLE_WEIGHT = 1.0
+        VELOCITY_WEIGHT = 0.1
+        MOTOR_ANGLE_WEIGHT = 0.001
+        ACTION_WEIGHT = 0.001
 
-        # # Calculate the angle penalty
-        # angle_penalty = ANGLE_WEIGHT * (state[0]/np.pi) ** 2
-        # # Calculate the velocity penalty
-        # velocity_penalty = VELOCITY_WEIGHT * (state[1]/self.omega_max) ** 2
-        # # Calculate the motor angle penalty
+        # Calculate the angle penalty
+        angle_penalty = ANGLE_WEIGHT * (state[0]) ** 2
+        # Calculate the velocity penalty
+        velocity_penalty = VELOCITY_WEIGHT * (state[1]) ** 2
+        # Calculate the motor angle penalty
         # motor_angle_penalty = MOTOR_ANGLE_WEIGHT * (self.motorAngle/self.motor_angle_range[1]) ** 2
-        # # Calculate the action penalty
-        # action_penalty = ACTION_WEIGHT * (self.action / 100.0) ** 2
+        # Calculate the action penalty
+        action_penalty = ACTION_WEIGHT * (self.action/100) ** 2
 
-        # # Calculate the reward
-        # reward = - (angle_penalty + velocity_penalty + motor_angle_penalty + action_penalty)
+        # Calculate the reward
+        reward = - (angle_penalty + velocity_penalty)
 
         # NEW REWARD FUNCTION
         # reward range [-1, 0]
-        angle_target = 0.0
-        angular_velocity_target = 0.0
+        # angle_target = 0.0
+        # angular_velocity_target = 0.0
         # motor_angle_target = 0.0
 
         # reward = -1/2 * (np.abs(state[0] - angle_target)/np.pi + np.abs(self.motorAngle - motor_angle_target)/self.motor_angle_range[1])
-        reward = -1/2 * (np.abs(state[0] - angle_target)/np.pi + np.abs(state[1] - angular_velocity_target)/self.omega_max)
+        # reward = - 1/2 * (np.abs(state[0] - angle_target) + np.abs(state[1] - angular_velocity_target))
         # if the episode is done with enough iterations
         # if self.iterCount > int(self.maxIter/2) and self.done:
         #     # if the average of the bar angles is less than 90 degrees
@@ -211,10 +208,10 @@ class PyBulletPendulum:
         #         reward += 100.0
 
         # if the episode is done with not enough iterations
-        if self.iterCount < int(self.maxIter/10) and self.done:
-            # if the motor angle is out of range
-            if self.out_of_range:
-                reward -= 100.0
+        # if self.iterCount < int(self.maxIter/10) and self.terminated:
+        #     # if the motor angle is out of range
+        #     if self.out_of_range:
+        #         reward -= 2000.0
         
         return reward
     
@@ -230,7 +227,7 @@ class PyBulletPendulum:
         """
 
         if self.iterCount >= reset_count:
-            self.done = True
+            self.terminated = True
 
     def send_fake_serial(self, command):
         """
@@ -247,10 +244,10 @@ class PyBulletPendulum:
         episode_done = command[1]
 
         if episode_done:
-            self.done = True
+            self.terminated = True
             self.reset_robot(mode="random")
         else:
-            self.done = False
+            self.terminated = False
             # Calculate the motor speed in steps per second
             motor_speed = motor_speed_percentage * self.max_motor_speed / 100.0
             # set the motor velocity
@@ -299,11 +296,11 @@ class PyBulletPendulum:
             bar_angle = -np.pi - bar_angle
 
         # round the states to 4 decimal places
-        bar_angle = round(bar_angle, 4)
-        bar_angular_velocity = round(bar_angular_velocity, 4)
+        bar_angle = round(bar_angle/np.pi, 4)
+        bar_angular_velocity = round(bar_angular_velocity/self.omega_max, 4)
         motor_angle = round(motor_angle, 4)
 
-        return [bar_angle, bar_angular_velocity], motor_angle, self.out_of_range
+        return np.array([bar_angle, bar_angular_velocity]), motor_angle, self.out_of_range
     
     def reset_robot(self, mode="random"):
         """
@@ -324,8 +321,8 @@ class PyBulletPendulum:
 
             # Set the robot to the random position
             p.resetJointState(self.robotId, self.bar_joint_idx, targetValue=bar_angle)
-            p.resetJointState(self.robotId, self.motor_joint_idx, targetValue=motor_angle)
-
+            # p.resetJointState(self.robotId, self.motor_joint_idx, targetValue=motor_angle)
+            p.resetJointState(self.robotId, self.motor_joint_idx, targetValue=-self.motor_compensation_angle)
             # set bar velocity with no force
             p.setJointMotorControl2(bodyUniqueId=self.robotId,
                                     jointIndex=self.bar_joint_idx,
