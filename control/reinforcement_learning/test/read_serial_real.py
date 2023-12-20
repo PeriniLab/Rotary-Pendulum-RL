@@ -1,4 +1,4 @@
-from ..Environments import RealPendulum as real
+from ..Environments import RealPendulumEnv as real
 
 # Create the environment
 env = real.RealPendulum("COM3", 115200)

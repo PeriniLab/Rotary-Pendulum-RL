@@ -1,5 +1,5 @@
-from ..Environments import RealPendulum as real
-from ..Environments import PyBulletPendulum as pb
+from ..Environments import RealPendulumEnv as real
+from ..Environments import PyBulletPendulumEnv as pb
 from ..Environments import FakeEnv as fake
 from ..DQN.Agent import Agent
 

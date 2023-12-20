@@ -4,8 +4,8 @@ from stable_baselines3 import DDPG
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.noise import NormalActionNoise, OrnsteinUhlenbeckActionNoise
 
-from .Environments import RealPendulumEnv as real
-from .Environments import PyBulletPendulumEnv as pb
+from ..Environments import RealPendulumEnv as real
+from ..Environments import PyBulletPendulumEnv as pb
 import numpy as np
 
 isReal = False
