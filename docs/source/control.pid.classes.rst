@@ -4,6 +4,14 @@ control.pid.classes package
 Submodules
 ----------
 
+control.pid.classes.EnergyController module
+-------------------------------------------
+
+.. automodule:: control.pid.classes.EnergyController
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 control.pid.classes.PIDController module
 ----------------------------------------
 

@@ -12,18 +12,18 @@ control.reinforcement\_learning.Environments.FakeEnv module
    :undoc-members:
    :show-inheritance:
 
-control.reinforcement\_learning.Environments.PyBulletPendulum module
---------------------------------------------------------------------
+control.reinforcement\_learning.Environments.PyBulletPendulumEnv module
+-----------------------------------------------------------------------
 
-.. automodule:: control.reinforcement_learning.Environments.PyBulletPendulum
+.. automodule:: control.reinforcement_learning.Environments.PyBulletPendulumEnv
    :members:
    :undoc-members:
    :show-inheritance:
 
-control.reinforcement\_learning.Environments.RealPendulum module
-----------------------------------------------------------------
+control.reinforcement\_learning.Environments.RealPendulumEnv module
+-------------------------------------------------------------------
 
-.. automodule:: control.reinforcement_learning.Environments.RealPendulum
+.. automodule:: control.reinforcement_learning.Environments.RealPendulumEnv
    :members:
    :undoc-members:
    :show-inheritance:
