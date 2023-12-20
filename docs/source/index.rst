@@ -35,6 +35,9 @@ The following sections will guide you through the installation process, from the
    :maxdepth: 2
    :caption: Firmware
 
+   firmware/setup
+   firmware/explanation
+
 .. toctree::
    :maxdepth: 2
    :caption: Simulation

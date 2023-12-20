@@ -106,5 +106,3 @@ Test the installation
        python -m control.reinforcement_learning.src.main
        # or
        python -m control.pid.src.main
-       # or
-       python ./simulation/pybullet/main.py
